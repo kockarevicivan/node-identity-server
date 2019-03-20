@@ -1,0 +1,35 @@
+{
+  "name": "node-identity-server",
+  "version": "1.0.0",
+  "description": "Simple identity server implemented in NodeJS.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/server.ts",
+    "build": "npm run lint && tsc",
+    "lint": "tslint src/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kockarevicivan/node-identity-server.git"
+  },
+  "keywords": [
+    "identity",
+    "nodejs"
+  ],
+  "author": "Ivan Kockarevic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kockarevicivan/node-identity-server/issues"
+  },
+  "homepage": "https://github.com/kockarevicivan/node-identity-server#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.10",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.4000"
+  },
+  "dependencies": {
+    "@types/express": "^4.16.1",
+    "express": "^4.16.4"
+  }
+}
