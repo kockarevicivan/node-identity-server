@@ -2,9 +2,9 @@
  * @file Defines all user routes
  * @author Ivan Kockarevic
  */
-import express from "express";
+import express from 'express';
 
-import UserService from '../services/UserService';
+// import UserService from '../services/UserService';
 
 const router = express.Router({});
 
