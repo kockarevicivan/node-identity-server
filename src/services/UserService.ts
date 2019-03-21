@@ -7,6 +7,9 @@ import { Document } from 'mongoose';
 import User from '../models/User';
 
 class UserService {
+    /**
+     * Returns an array containing all users inside the db collection.
+     */
     public getAll(): Promise<Document[]> {
         return new Promise<Document[]>((resolve, reject) => {
             User.find()
@@ -15,6 +18,10 @@ class UserService {
         });
     }
 
+    /**
+     * Returns a document containing data of the requested user.
+     * @param id Id of the wanted user.
+     */
     public get(id: string): Promise<Document> {
         return new Promise<Document>((resolve, reject) => {
             User.findOne({ _id: id })
@@ -23,6 +30,10 @@ class UserService {
         });
     }
 
+    /**
+     * Inserts a user into database.
+     * @param user User that needs to be inserted.
+     */
     public create(user: any): Promise<Document> {
         return new Promise<Document>((resolve, reject) => {
             User.create(user)
@@ -31,6 +42,10 @@ class UserService {
         });
     }
 
+    /**
+     * Updates all the data for the provided user.
+     * @param user User object with new data applied.
+     */
     public update(user: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             User.update({ _id: user.id }, { $set: user }, { multi: true })
@@ -39,6 +54,10 @@ class UserService {
         });
     }
 
+    /**
+     * Removes a specific user from the db collection.
+     * @param id Id of the user that needs to be removed.
+     */
     public delete(id: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             User.findByIdAndRemove(id)
