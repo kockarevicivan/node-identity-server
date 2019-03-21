@@ -1,5 +1,5 @@
 /**
- * @file Defines all user routes
+ * @file Defines all user related route patterns.
  * @author Ivan Kockarevic
  */
 import express from 'express';

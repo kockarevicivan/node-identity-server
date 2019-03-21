@@ -1,5 +1,5 @@
 /**
- * @file Defines all authentication routes
+ * @file Defines all authentication related route patterns.
  * @author Ivan Kockarevic
  */
 import express from 'express';

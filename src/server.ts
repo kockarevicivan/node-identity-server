@@ -1,33 +1,27 @@
+/**
+ * @file Startup file.
+ * @author Ivan Kockarevic
+ */
+import bluebird from 'bluebird';
 import bodyParser from 'body-parser';
 import express from 'express';
 import mongoose from 'mongoose';
 
+import config from './config';
 import authenticationRoutes from './routes/authentication';
 import userRoutes from './routes/user';
-import transform from './utils/transform';
 
+// Initialize Express.
 const app = express();
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost/node_identity_server', { useNewUrlParser: true });
+// Configure promise with Bluebird and connect to MongoDB.
+mongoose.Promise = bluebird;
+mongoose.connect(config.databaseUrl, { useNewUrlParser: true });
 
-mongoose.model('user', new mongoose.Schema({
-    email: String,
-    fullName: String,
-    password: String,
-    role: String,
-    token: String,
-}, {
-    timestamps: true,
-    toJSON: { transform },
-}));
-
-app.get('/', (req: any, res: any) => {
-    mongoose.model('user').find((error, users) => {
-        res.send(users);
-    });
-});
+// Map routes.
 app.use('/user', userRoutes);
 app.use('/authentication', authenticationRoutes);
 
-app.listen(3000, () => console.log('App listening on http://localhost:3000'));
+// Start the app.
+app.listen(3000, () => console.log(`App listening on http://localhost:${config.port}`));

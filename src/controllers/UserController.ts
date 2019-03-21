@@ -1,3 +1,7 @@
+/**
+ * @file Dispatcher for user related requests.
+ * @author Ivan Kockarevic
+ */
 import UserService from '../services/UserService';
 
 class UserController {

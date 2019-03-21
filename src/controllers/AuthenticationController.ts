@@ -1,3 +1,7 @@
+/**
+ * @file Dispatcher for authentication related requests.
+ * @author Ivan Kockarevic
+ */
 import AuthenticationService from '../services/AuthenticationService';
 
 class AuthenticationController {

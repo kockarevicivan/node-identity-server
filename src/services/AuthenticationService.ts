@@ -1,3 +1,7 @@
+/**
+ * @file Defines all authentication related business logic.
+ * @author Ivan Kockarevic
+ */
 class AuthenticationService {
     public generateToken(email: string, password: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
