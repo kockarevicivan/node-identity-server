@@ -4,10 +4,14 @@
  */
 import express from 'express';
 
-// import UserService from '../services/UserService';
+import UserController from '../controllers/UserController';
 
 const router = express.Router({});
 
-router.get('/', (req, res) => res.send('Hello from the user route!'));
+router.get('/', UserController.getAll);
+router.get('/:id', UserController.get);
+router.post('/', UserController.create);
+router.put('/:id', UserController.update);
+router.delete('/:id', UserController.delete);
 
 export default router;

@@ -1,13 +1,14 @@
 /**
- * @file Defines all user routes
+ * @file Defines all authentication routes
  * @author Ivan Kockarevic
  */
 import express from 'express';
 
-// import AuthenticationService from '../services/AuthenticationService';
+import AuthenticationController from '../controllers/AuthenticationController';
 
 const router = express.Router({});
 
-router.get('/', (req, res) => res.send('Hello from the authentication route!'));
+router.get('/', AuthenticationController.generateToken);
+router.get('/validate', AuthenticationController.validateToken);
 
 export default router;
