@@ -1,22 +1,38 @@
+import UserService from '../services/UserService';
+
 class UserController {
-    getAll() {
-        // TODO: To be implemented.
+    public getAll(req: any, res: any) {
+        UserService.getAll()
+        .then((users: []) => res.send(users))
+        .catch((error: any) => res.send('error'));
     }
 
-    get() {
-        // TODO: To be implemented.
+    public get(req: any, res: any) {
+        UserService.get(req.params.id)
+        .then((user: any) => res.send(user))
+        .catch((error: any) => res.send('error'));
     }
 
-    create() {
-        // TODO: To be implemented.
+    public create(req: any, res: any) {
+        UserService.create({
+           fullName: req.body.fullName,
+        })
+        .then((user: any) => res.send(user))
+        .catch((error: any) => res.send('error'));
     }
 
-    update() {
-        // TODO: To be implemented.
+    public update(req: any, res: any) {
+        UserService.update({
+            fullName: req.body.fullName,
+        })
+        .then((user: any) => res.send(user))
+        .catch((error: any) => res.send('error'));
     }
 
-    delete() {
-        // TODO: To be implemented.
+    public delete(req: any, res: any) {
+        UserService.delete(req.params.id)
+        .then(() => res.send('deleted'))
+        .catch((error: any) => res.send('error'));
     }
 }
 

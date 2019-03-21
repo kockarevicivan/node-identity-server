@@ -1,10 +1,16 @@
+import AuthenticationService from '../services/AuthenticationService';
+
 class AuthenticationController {
-    generateToken(req: any, res: any) {
-        // TODO: To be implemented.
+    public generateToken(req: any, res: any) {
+        AuthenticationService.generateToken(req.params.email, req.params.password)
+        .then((token: string) => res.send(token))
+        .catch((error: any) => res.send('error'));
     }
 
-    validateToken(req: any, res: any) {
-        // TODO: To be implemented.
+    public validateToken(req: any, res: any) {
+        AuthenticationService.validateToken(req.params.token)
+        .then((response: boolean) => res.send(response))
+        .catch((error: any) => res.send('error'));
     }
 }
 
