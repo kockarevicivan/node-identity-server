@@ -19,7 +19,11 @@ class UserController {
 
     public create(req: any, res: any) {
         UserService.create({
-           fullName: req.body.fullName,
+            email: req.body.email,
+            fullName: req.body.fullName,
+            password: req.body.password,
+            role: req.body.role,
+            token: req.body.token,
         })
         .then((user: any) => res.send(user))
         .catch((error: any) => res.send('error'));
@@ -27,7 +31,11 @@ class UserController {
 
     public update(req: any, res: any) {
         UserService.update({
+            email: req.body.email,
             fullName: req.body.fullName,
+            password: req.body.password,
+            role: req.body.role,
+            token: req.body.token,
         })
         .then((user: any) => res.send(user))
         .catch((error: any) => res.send('error'));

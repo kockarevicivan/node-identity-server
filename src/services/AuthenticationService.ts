@@ -26,7 +26,7 @@ class AuthenticationService {
 
     /**
      * Refreshes the token by provided refresh token.
-     * @param refreshToken Refresh token for the user that needs to refresh the token. 
+     * @param refreshToken Refresh token for the user that needs to refresh the token.
      */
     public refreshToken(refreshToken: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {

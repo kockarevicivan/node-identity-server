@@ -14,6 +14,7 @@ import userRoutes from './routes/user';
 // Initialize Express.
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configure promise with Bluebird and connect to MongoDB.
 mongoose.Promise = bluebird;
