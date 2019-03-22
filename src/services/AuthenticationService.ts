@@ -16,24 +16,14 @@ class AuthenticationService {
      */
     public generateToken(email: string, password: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            if (!email) {
-                reject('Email is required.');
-                return;
-            }
-
-            if (!password) {
-                reject('Password is required.');
-                return;
-            }
+            if (!email) return reject('Email is required.');
+            if (!password) return reject('Password is required.');
 
             UserService.getByEmail(email).then((user: any) => {
                 bcrypt.hash(password, config.saltRounds, (err, hash) => {
                     console.log(hash, user.password);
 
-                    if (hash !== user.password) {
-                        reject('Passwords don\'t match.');
-                        return;
-                    }
+                    if (hash !== user.password) return reject('Passwords don\'t match.');
 
                     const refreshToken = jwt.sign({
                         data: {
