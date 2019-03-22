@@ -2,8 +2,10 @@
  * @file Defines all user related business logic.
  * @author Ivan Kockarevic
  */
+import bcrypt from 'bcrypt';
 import { Document } from 'mongoose';
 
+import config from '../config';
 import User from '../models/User';
 
 class UserService {
@@ -31,14 +33,30 @@ class UserService {
     }
 
     /**
+     * Returns a document containing data of the requested user.
+     * @param email Email of the wanted user.
+     */
+    public getByEmail(email: string): Promise<Document> {
+        return new Promise<Document>((resolve, reject) => {
+            User.findOne({ email })
+            .then((data) => resolve(data))
+            .catch((error) => reject(error));
+        });
+    }
+
+    /**
      * Inserts a user into database.
      * @param user User that needs to be inserted.
      */
     public create(user: any): Promise<Document> {
         return new Promise<Document>((resolve, reject) => {
-            User.create(user)
-            .then((data) => resolve(data))
-            .catch((error) => reject(error));
+            bcrypt.hash(user.password, config.saltRounds, (err, hash) => {
+                user.password = hash;
+
+                User.create(user)
+                .then((data) => resolve(data))
+                .catch((error) => reject(error));
+            });
         });
     }
 
@@ -48,9 +66,19 @@ class UserService {
      */
     public update(user: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            User.updateOne({ _id: user.id }, { $set: user }, { multi: true })
-            .then((data) => resolve(user))
-            .catch((error) => reject(error));
+            if (user.password) {
+                bcrypt.hash(user.password, config.saltRounds, (err, hash) => {
+                    user.password = hash;
+
+                    User.updateOne({ _id: user.id }, { $set: user }, { multi: true })
+                    .then((data) => resolve(user))
+                    .catch((error) => reject(error));
+                });
+            } else {
+                User.updateOne({ _id: user.id }, { $set: user }, { multi: true })
+                .then((data) => resolve(user))
+                .catch((error) => reject(error));
+            }
         });
     }
 

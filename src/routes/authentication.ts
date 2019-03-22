@@ -9,9 +9,12 @@ import AuthenticationController from '../controllers/AuthenticationController';
 const router = express.Router({});
 
 // Generate
-router.get('/', AuthenticationController.generateToken);
+router.post('/', AuthenticationController.generateToken);
 
 // Validate
-router.get('/validate', AuthenticationController.validateToken);
+router.post('/validate', AuthenticationController.validateToken);
+
+// Refresh
+router.post('/refresh', AuthenticationController.refreshToken);
 
 export default router;

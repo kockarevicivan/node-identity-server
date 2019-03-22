@@ -10,8 +10,8 @@ export default mongoose.model('user', new mongoose.Schema({
     email: String,
     fullName: String,
     password: String,
+    refreshToken: String,
     role: String,
-    token: String,
 }, {
     timestamps: true,
     toJSON: { transform },

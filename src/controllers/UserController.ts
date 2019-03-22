@@ -22,8 +22,8 @@ class UserController {
             email: req.body.email,
             fullName: req.body.fullName,
             password: req.body.password,
+            refreshToken: req.body.refreshToken,
             role: req.body.role,
-            token: req.body.token,
         })
         .then((user: any) => res.send(user))
         .catch((error: any) => res.send('error'));
@@ -35,8 +35,8 @@ class UserController {
             fullName: req.body.fullName,
             id: req.params.id,
             password: req.body.password,
+            refreshToken: req.body.refreshToken,
             role: req.body.role,
-            token: req.body.token,
         })
         .then((user: any) => res.send(user))
         .catch((error: any) => res.send('error'));
