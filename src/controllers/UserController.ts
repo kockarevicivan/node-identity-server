@@ -33,6 +33,7 @@ class UserController {
         UserService.update({
             email: req.body.email,
             fullName: req.body.fullName,
+            id: req.params.id,
             password: req.body.password,
             role: req.body.role,
             token: req.body.token,

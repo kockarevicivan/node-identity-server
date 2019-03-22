@@ -48,7 +48,7 @@ class UserService {
      */
     public update(user: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            User.update({ _id: user.id }, { $set: user }, { multi: true })
+            User.updateOne({ _id: user.id }, { $set: user }, { multi: true })
             .then((data) => resolve(user))
             .catch((error) => reject(error));
         });
