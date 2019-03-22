@@ -2,7 +2,7 @@
  * @file Defines all user related business logic.
  * @author Ivan Kockarevic
  */
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { Document } from 'mongoose';
 
 import config from '../config';

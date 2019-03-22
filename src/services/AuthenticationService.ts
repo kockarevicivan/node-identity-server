@@ -2,7 +2,7 @@
  * @file Defines all authentication related business logic.
  * @author Ivan Kockarevic
  */
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import config from '../config';
@@ -28,6 +28,8 @@ class AuthenticationService {
 
             UserService.getByEmail(email).then((user: any) => {
                 bcrypt.hash(password, config.saltRounds, (err, hash) => {
+                    console.log(hash, user.password);
+
                     if (hash !== user.password) {
                         reject('Passwords don\'t match.');
                         return;

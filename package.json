@@ -32,9 +32,9 @@
     "typescript": "^3.3.4000"
   },
   "dependencies": {
-    "@types/bcrypt": "^3.0.0",
+    "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^8.3.2",
-    "bcrypt": "^3.0.5",
+    "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
