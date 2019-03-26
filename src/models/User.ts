@@ -12,6 +12,7 @@ export default mongoose.model('user', new mongoose.Schema({
     password: String,
     refreshToken: String,
     role: String,
+    salt: String,
 }, {
     timestamps: true,
     toJSON: { transform },

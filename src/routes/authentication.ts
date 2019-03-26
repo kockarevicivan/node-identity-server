@@ -11,9 +11,6 @@ const router = express.Router({});
 // Generate
 router.post('/', AuthenticationController.generateToken);
 
-// Validate
-router.post('/validate', AuthenticationController.validateToken);
-
 // Refresh
 router.post('/refresh', AuthenticationController.refreshToken);
 

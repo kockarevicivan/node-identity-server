@@ -11,15 +11,9 @@ class AuthenticationController {
         .catch((error: any) => res.send('error'));
     }
 
-    public validateToken(req: any, res: any) {
-        AuthenticationService.validateToken(req.params.token)
-        .then((response: boolean) => res.send(response))
-        .catch((error: any) => res.send('error'));
-    }
-
     public refreshToken(req: any, res: any) {
-        AuthenticationService.validateToken(req.params.token)
-        .then((response: boolean) => res.send(response))
+        AuthenticationService.refreshToken(req.params.token)
+        .then((response: string) => res.send(response))
         .catch((error: any) => res.send('error'));
     }
 }

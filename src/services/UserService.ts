@@ -3,6 +3,7 @@
  * @author Ivan Kockarevic
  */
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { Document } from 'mongoose';
 
 import config from '../config';
@@ -15,8 +16,8 @@ class UserService {
     public getAll(): Promise<Document[]> {
         return new Promise<Document[]>((resolve, reject) => {
             User.find()
-            .then((data) => resolve(data))
-            .catch((error) => reject(error));
+                .then((data) => resolve(data))
+                .catch((error) => reject(error));
         });
     }
 
@@ -27,8 +28,8 @@ class UserService {
     public get(id: string): Promise<Document> {
         return new Promise<Document>((resolve, reject) => {
             User.findOne({ _id: id })
-            .then((data) => resolve(data))
-            .catch((error) => reject(error));
+                .then((data) => resolve(data))
+                .catch((error) => reject(error));
         });
     }
 
@@ -39,8 +40,20 @@ class UserService {
     public getByEmail(email: string): Promise<Document> {
         return new Promise<Document>((resolve, reject) => {
             User.findOne({ email })
-            .then((data) => resolve(data))
-            .catch((error) => reject(error));
+                .then((data) => resolve(data))
+                .catch((error) => reject(error));
+        });
+    }
+
+    /**
+     * Returns a document containing data of the requested user.
+     * @param refreshToken Refresh token of the wanted user.
+     */
+    public getByRefreshToken(refreshToken: string): Promise<Document> {
+        return new Promise<Document>((resolve, reject) => {
+            User.findOne({ refreshToken })
+                .then((data) => resolve(data))
+                .catch((error) => reject(error));
         });
     }
 
@@ -50,12 +63,28 @@ class UserService {
      */
     public create(user: any): Promise<Document> {
         return new Promise<Document>((resolve, reject) => {
-            bcrypt.hash(user.password, config.saltRounds, (err, hash) => {
-                user.password = hash;
+            if (!user.email) return reject('E-mail is mandatory.');
+            if (!user.fullName) return reject('Full name is mandatory.');
+            if (!user.password) return reject('Password is mandatory.');
+            if (!user.role) return reject('Role is mandatory.');
 
-                User.create(user)
-                .then((data) => resolve(data))
-                .catch((error) => reject(error));
+            bcrypt.genSalt(config.saltRounds, (saltError, salt) => {
+                if (saltError) return reject('Salt error.');
+
+                bcrypt.hash(user.password, salt, (hashError, hash) => {
+                    if (hashError) return reject('Hash error.');
+
+                    const refreshToken =
+                        jwt.sign({ data: { email: user.email, fullName: user.fullName } }, config.secret);
+
+                    user.refreshToken = refreshToken;
+                    user.password = hash;
+                    user.salt = salt;
+
+                    User.create(user)
+                        .then((data) => resolve(data))
+                        .catch((error) => reject(error));
+                });
             });
         });
     }
@@ -67,17 +96,24 @@ class UserService {
     public update(user: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             if (user.password) {
-                bcrypt.hash(user.password, config.saltRounds, (err, hash) => {
-                    user.password = hash;
+                bcrypt.genSalt(config.saltRounds, (saltError, salt) => {
+                    if (saltError) return reject('Salt error.');
 
-                    User.updateOne({ _id: user.id }, { $set: user }, { multi: true })
-                    .then((data) => resolve(user))
-                    .catch((error) => reject(error));
+                    bcrypt.hash(user.password, salt, (hashError, hash) => {
+                        if (hashError) return reject('Hash error.');
+
+                        user.password = hash;
+                        user.salt = salt;
+
+                        User.updateOne({ _id: user.id }, { $set: user }, { multi: true })
+                            .then((data) => resolve(user))
+                            .catch((error) => reject(error));
+                    });
                 });
             } else {
                 User.updateOne({ _id: user.id }, { $set: user }, { multi: true })
-                .then((data) => resolve(user))
-                .catch((error) => reject(error));
+                    .then((data) => resolve(user))
+                    .catch((error) => reject(error));
             }
         });
     }
@@ -89,8 +125,8 @@ class UserService {
     public delete(id: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             User.findByIdAndRemove(id)
-            .then((data) => resolve())
-            .catch((error) => reject(error));
+                .then((data) => resolve())
+                .catch((error) => reject(error));
         });
     }
 }

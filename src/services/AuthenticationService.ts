@@ -14,53 +14,29 @@ class AuthenticationService {
      * @param email Email of the user that requests the token.
      * @param password Password of the user that requests the token.
      */
-    public generateToken(email: string, password: string): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
+    public generateToken(email: string, password: string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
             if (!email) return reject('Email is required.');
             if (!password) return reject('Password is required.');
 
             UserService.getByEmail(email).then((user: any) => {
-                bcrypt.hash(password, config.saltRounds, (err, hash) => {
-                    console.log(hash, user.password);
+                if (!user) return reject('User not found.');
 
+                bcrypt.hash(password, user.salt, (hashError, hash) => {
+                    if (hashError) return reject('Hash error.');
                     if (hash !== user.password) return reject('Passwords don\'t match.');
 
-                    const refreshToken = jwt.sign({
+                    const accessToken = jwt.sign({
                         data: {
                             email: user.email,
+                            expiresAt: new Date().getTime() + config.tokenExpirySeconds,
                             fullName: user.fullName,
                         },
-                    }, config.secret);
+                    }, config.secret, { expiresIn: config.tokenExpirySeconds });
 
-                    user.refreshToken = refreshToken;
-
-                    UserService.update(user).then(() => {
-                        const accessToken = jwt.sign({
-                            data: {
-                                email: user.email,
-                                expiresIn: config.tokenExpirySeconds,
-                                fullName: user.fullName,
-                            },
-                        }, config.secret, { expiresIn: config.tokenExpirySeconds });
-
-                        resolve({
-                            accessToken,
-                            refreshToken,
-                        });
-                    });
+                    resolve(accessToken);
                 });
-            });
-
-        });
-    }
-
-    /**
-     * Checks and confirms the validity of the provided token.
-     * @param token JWT token that needs to be validated.
-     */
-    public validateToken(token: string): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
-            resolve(true);
+            }).catch((error: any) => reject(error));
         });
     }
 
@@ -70,7 +46,21 @@ class AuthenticationService {
      */
     public refreshToken(refreshToken: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            resolve('test');
+            if (!refreshToken) return reject('Email is required.');
+
+            UserService.getByRefreshToken(refreshToken).then((user: any) => {
+                if (!user) return reject('User not found.');
+
+                const accessToken = jwt.sign({
+                    data: {
+                        email: user.email,
+                        expiresAt: new Date().getTime() + config.tokenExpirySeconds,
+                        fullName: user.fullName,
+                    },
+                }, config.secret, { expiresIn: config.tokenExpirySeconds });
+
+                resolve(accessToken);
+            }).catch((error: any) => reject(error));
         });
     }
 }
