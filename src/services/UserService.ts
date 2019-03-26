@@ -17,7 +17,7 @@ class UserService {
         return new Promise<Document[]>((resolve, reject) => {
             User.find()
                 .then((data) => resolve(data))
-                .catch((error) => reject(error));
+                .catch((error) => reject('Couldn\'t find users.'));
         });
     }
 
@@ -29,7 +29,7 @@ class UserService {
         return new Promise<Document>((resolve, reject) => {
             User.findOne({ _id: id })
                 .then((data) => resolve(data))
-                .catch((error) => reject(error));
+                .catch((error) => reject('Couldn\'t find user.'));
         });
     }
 
@@ -41,7 +41,7 @@ class UserService {
         return new Promise<Document>((resolve, reject) => {
             User.findOne({ email })
                 .then((data) => resolve(data))
-                .catch((error) => reject(error));
+                .catch((error) => reject('Couldn\'t find user.'));
         });
     }
 
@@ -53,7 +53,7 @@ class UserService {
         return new Promise<Document>((resolve, reject) => {
             User.findOne({ refreshToken })
                 .then((data) => resolve(data))
-                .catch((error) => reject(error));
+                .catch((error) => reject('Couldn\'t find user.'));
         });
     }
 
@@ -83,7 +83,7 @@ class UserService {
 
                     User.create(user)
                         .then((data) => resolve(data))
-                        .catch((error) => reject(error));
+                        .catch((error) => reject('User creation failed.'));
                 });
             });
         });
@@ -107,13 +107,13 @@ class UserService {
 
                         User.updateOne({ _id: user.id }, { $set: user }, { multi: true })
                             .then((data) => resolve(user))
-                            .catch((error) => reject(error));
+                            .catch((error) => reject('User update failed.'));
                     });
                 });
             } else {
                 User.updateOne({ _id: user.id }, { $set: user }, { multi: true })
                     .then((data) => resolve(user))
-                    .catch((error) => reject(error));
+                    .catch((error) => reject('User update failed.'));
             }
         });
     }
@@ -126,7 +126,7 @@ class UserService {
         return new Promise<void>((resolve, reject) => {
             User.findByIdAndRemove(id)
                 .then((data) => resolve())
-                .catch((error) => reject(error));
+                .catch((error) => reject('User removal failed.'));
         });
     }
 }

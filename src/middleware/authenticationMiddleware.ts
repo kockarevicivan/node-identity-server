@@ -2,10 +2,12 @@
  * @file JWT authentication middleware.
  * @author Ivan Kockarevic
  */
+import express from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 
-const isAuthenticated = (req: any, res: any, next: any) => {
+// Request is any because we want to assign the decoded user object to it.
+const isAuthenticated = (req: any, res: express.Response, next: express.NextFunction) => {
 
     const decoded: any = jwt.verify(req.headers.authorization, config.secret);
 

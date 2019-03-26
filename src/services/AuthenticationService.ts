@@ -36,7 +36,7 @@ class AuthenticationService {
 
                     resolve(accessToken);
                 });
-            }).catch((error: any) => reject(error));
+            }).catch((error: string) => reject(error));
         });
     }
 
@@ -60,7 +60,7 @@ class AuthenticationService {
                 }, config.secret, { expiresIn: config.tokenExpirySeconds });
 
                 resolve(accessToken);
-            }).catch((error: any) => reject(error));
+            }).catch((error: string) => reject(error));
         });
     }
 }

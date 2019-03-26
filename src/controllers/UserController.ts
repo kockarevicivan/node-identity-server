@@ -2,22 +2,35 @@
  * @file Dispatcher for user related requests.
  * @author Ivan Kockarevic
  */
+import express from 'express';
 import UserService from '../services/UserService';
 
 class UserController {
-    public getAll(req: any, res: any) {
+    public getAll(req: express.Request, res: express.Response) {
         UserService.getAll()
-        .then((users: []) => res.send(users))
-        .catch((error: any) => res.send('error'));
+            .then((users: []) => res.send({
+                data: users,
+                success: true,
+            }))
+            .catch((errorMessage: string) => res.send({
+                message: errorMessage,
+                success: false,
+            }));
     }
 
-    public get(req: any, res: any) {
+    public get(req: express.Request, res: express.Response) {
         UserService.get(req.params.id)
-        .then((user: any) => res.send(user))
-        .catch((error: any) => res.send('error'));
+            .then((user: any) => res.send({
+                data: user,
+                success: true,
+            }))
+            .catch((errorMessage: string) => res.send({
+                message: errorMessage,
+                success: false,
+            }));
     }
 
-    public create(req: any, res: any) {
+    public create(req: express.Request, res: express.Response) {
         UserService.create({
             email: req.body.email,
             fullName: req.body.fullName,
@@ -25,11 +38,17 @@ class UserController {
             refreshToken: req.body.refreshToken,
             role: req.body.role,
         })
-        .then((user: any) => res.send(user))
-        .catch((error: any) => res.send('error'));
+            .then((user: any) => res.send({
+                data: user,
+                success: true,
+            }))
+            .catch((errorMessage: string) => res.send({
+                message: errorMessage,
+                success: false,
+            }));
     }
 
-    public update(req: any, res: any) {
+    public update(req: express.Request, res: express.Response) {
         UserService.update({
             email: req.body.email,
             fullName: req.body.fullName,
@@ -38,14 +57,25 @@ class UserController {
             refreshToken: req.body.refreshToken,
             role: req.body.role,
         })
-        .then((user: any) => res.send(user))
-        .catch((error: any) => res.send('error'));
+            .then((user: any) => res.send({
+                data: user,
+                success: true,
+            }))
+            .catch((errorMessage: string) => res.send({
+                message: errorMessage,
+                success: false,
+            }));
     }
 
-    public delete(req: any, res: any) {
+    public delete(req: express.Request, res: express.Response) {
         UserService.delete(req.params.id)
-        .then(() => res.send('deleted'))
-        .catch((error: any) => res.send('error'));
+            .then(() => res.send({
+                success: true,
+            }))
+            .catch((errorMessage: string) => res.send({
+                message: errorMessage,
+                success: false,
+            }));
     }
 }
 
