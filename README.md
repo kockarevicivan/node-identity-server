@@ -1,4 +1,5 @@
 # node-identity-server
+
 Simple authentication microservice written in NodeJS.
 
 ## Project setup
